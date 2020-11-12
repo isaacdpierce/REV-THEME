@@ -1,0 +1,174 @@
+{% assign bg_color = section.settings.bg_color %}
+{% assign question_font_color = section.settings.question_font_color %}
+{% assign question_font_size = section.settings.question_font_size %}
+{% assign title_font_size = section.settings.title_font_size %}
+{% assign answer_font_size = section.settings.answer_font_size %}
+{% assign answer_font_color = section.settings.answer_font_color %}
+{% assign form_header = section.settings.form_header %}
+
+{% for block in section.blocks %}
+
+{% endfor %}
+
+<section class="gdc-faq">
+  {% for block in section.blocks %}
+    {% if  block.settings.section_title %}
+      <h6 class="gdc-faq-title">{{ block.settings.section_title }}</h6>
+    {% endif %}
+    {% if  block.settings.question %}
+      <button class="gdc-accordion">{{ block.settings.question }}</button>
+      <div class="gdc-panel">
+        {{ block.settings.answer }}
+      </div>
+   {% endif %}
+  {% endfor %}
+</section>
+
+
+{% style %}
+  .gdc-accordion {
+    background-color: {{ bg_color }}; 
+    color: {{ question_font_color }};
+    font-size: {{ question_font_size }}px;
+  }
+
+  .gdc-panel {
+    color: {{ answer_font_color }};
+    font-size: {{ answer_font_size }}px;
+  }
+
+  .gdc-accordion:after {
+    color: {{ question_font_color }};
+  }
+
+  .gdc-faq-title {
+    font-size: {{ title_font_size }}px;
+  }
+
+
+
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "FAQ",
+  "class": "faq",
+  "settings": [
+    {
+      "id": "bg_color",
+      "type": "color",
+      "label": "FAQ Color",
+      "info": "The background color for your FAQ question." 
+    },
+    {
+      "type": "range",
+      "id": "title_font_size",
+      "min": 16,
+      "max": 90,
+      "step": 1,
+      "unit": "px",
+      "label": "Title Font Size",
+      "default": 24
+    },
+    {
+      "id": "question_font_color",
+      "type": "color",
+      "label": "Question Font Color",
+      "info": "The color for the question font." 
+    },
+    {
+      "type": "range",
+      "id": "question_font_size",
+      "min": 12,
+      "max": 90,
+      "step": 1,
+      "unit": "px",
+      "label": "Question Font Size",
+      "default": 24
+    },
+    {
+      "id": "answer_font_color",
+      "type": "color",
+      "label": "Answer Font Color",
+      "info": "The color for the answer font." 
+    },
+    {
+      "type": "range",
+      "id": "answer_font_size",
+      "min": 12,
+      "max": 90,
+      "step": 1,
+      "unit": "px",
+      "label": "Answer Font Size",
+      "default": 24
+    },
+    {
+      "id": "form_header",
+      "type": "text",
+      "label": "Contact Form Header"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "FAQ_entry", 
+      "name": "FAQ Entry",
+      "settings": [
+      {
+        "type": "header",
+        "content": "FAQ entry"
+      },
+      {
+        "id": "question",
+        "type": "richtext",
+        "label": "Question",
+        "info": "The question for your FAQ entry."
+      },
+      {
+        "id": "answer",
+        "type": "richtext",
+        "label": "Answer",
+        "info": "The answer for your FAQ entry."
+      }
+      ]
+    },
+    {
+      "type": "Section_Title", 
+      "name": "Section Title",
+      "settings": [
+      {
+        "type": "header",
+        "content": "Section Title"
+      },
+      {
+        "id": "section_title",
+        "type": "text",
+        "label": "Section Title",
+        "info": "The subject for this section"
+      }
+      ]
+    }
+  ]
+}
+
+{% endschema %}
+
+
+{% javascript %}
+
+
+  const acc = document.getElementsByClassName("gdc-accordion");
+
+  for (let i = 0; i < acc.length; i++) {
+    acc[i].addEventListener("click", function() {  
+      this.classList.toggle("active");
+      let panel = this.nextElementSibling;
+      if (panel.style.maxHeight) {
+        panel.style.maxHeight = null;
+      } else {
+        panel.style.maxHeight = panel.scrollHeight + "px"; 
+      }
+    });
+  }
+
+
+{% endjavascript %}

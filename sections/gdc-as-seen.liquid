@@ -1,0 +1,178 @@
+{% assign bg_image = section.settings.bg_image %}
+
+<div class="gdc-logolist">
+  <img class="gdc-logolist__bg-image" src="https://cdn.shopify.com/s/files/1/0487/4856/0534/{{ bg_image }}">
+  <div class="gdc-logolist__overlay"></div>
+  <div class="gdc-logolist__header">
+    <h4>{{ section.settings.header }}</h4>
+  </div>
+
+  <div class="gdc-logolist__images">
+    {% for block in section.blocks %}
+      <picture>
+          {% if block.settings.image  %}
+              <img class="gdc-logolist__image" src="{{ block.settings.image | img_url: '500x' }}">
+          {% endif %}
+      </picture>
+    {% endfor %}
+  </div>
+</div>
+
+
+
+{% style %}
+.gdc-logolist {  
+  display: grid;
+  grid-template-columns: 100vw;
+  grid-template-rows: auto auto;
+  place-items: center;
+  text-align: center;
+  width: 100vw;
+}
+
+.gdc-logolist__overlay {
+  grid-column: 1 / -1;
+  grid-row: 1 / -1;
+  background-color:  {{ section.settings.overlay_color }};
+  opacity: {{ section.settings.overlay_opacity }};
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.gdc-logolist__bg-image {
+  grid-column: 1 / -1;
+  grid-row: 1 / -1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+
+.gdc-logolist__header {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  padding: 40px;
+}
+
+.gdc-logolist__header h4 {
+  color: {{ section.settings.header_color }};
+  font-size: {{ section.settings.header_font_size }}em;
+  text-transform: uppercase;
+  letter-spacing: .2em;
+}
+
+.gallery-btn {
+  display: inline-block;
+  padding: 0 25px;
+}
+
+.gallery-btn:hover {
+  color: #999;
+}
+
+.gdc-logolist__images {
+  grid-column: 1;
+  grid-row: 2;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+  padding: 0 40px 40px;
+}
+
+.gdc-logolist__images picture {   
+  min-width: 33%;
+  padding: 50px;      
+}
+
+.gdc-logolist__image {
+  max-width: {{ section.settings.logo_size }}px;
+}
+{% endstyle %}
+
+
+{% schema %}
+  {
+    "name": "As Seen In",
+    "settings": [
+      {
+        "type": "text",
+        "id": "header",
+        "label": "Section Header"
+      },
+      {
+        "type": "range",
+        "id": "header_font_size",
+        "min": 1,
+        "max": 5,
+        "step": 0.5,
+        "label": "Header Font Size",
+        "default": 3
+      },
+      {
+        "type": "color",
+        "id": "header_color",
+        "label": "Header Color",
+        "default": "#fff"
+      },
+      {
+        "type": "color",
+        "id": "overlay_color",
+        "label": "Overlay Background Color",
+        "default": "#333"
+      },
+      {
+        "type": "range",
+        "id": "overlay_opacity",
+        "min": 0,
+        "max": 1,
+        "step": 0.1,
+        "label": "Overlay Opacity", 
+        "default": 0.5
+      },
+      {
+        "type": "range",
+        "id": "logo_size",
+        "min": 200,
+        "max": 400,
+        "step": 10,
+        "label": "Logo Size",
+        "unit": "px",
+        "default": 300
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_image",
+        "label": "Background Image"
+      }
+    ],
+    "blocks": [
+    {
+      "type": "gallery_image",
+      "name": "Logo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "image_url",
+          "label": "Image Url",
+          "info": "When image is clicked - go to this link."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "As Seen In",    
+      "category": "Image",
+      "settings": {}
+    }
+  ]
+  }
+{% endschema %}

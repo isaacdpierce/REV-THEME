@@ -1,0 +1,43 @@
+
+ <div class="gdc-form-wrapper">
+    {% if block.settings.title != blank %}
+      {%- assign title_word_count = block.settings.title | split: ' ' | size -%}
+      <h6 class="section-footer__title{% if title_word_count < 4 %} no-wrap{% endif %}">
+        {{- block.settings.title | escape -}}
+      </h6>
+    {% endif %}
+
+    {% if block.settings.text != blank %}
+      <div class="gdc-section-footer__text">  
+        {{ block.settings.text }}
+      </div>
+    {% endif %}
+
+    <div class="gdc-signup-form">
+      {% form 'customer', id: 'footer_newsletter_signup', class: 'gdc-form' %}
+        {% if form.posted_successfully? %}
+          <div class="section-footer__newsletter-block__message signup-form__response signup-form__response--success">
+            <h6>{{ 'layout.signup.post_success' | t }}</h6>
+          </div>
+        {% else %}
+          {% if form.errors %}
+            {% for field in form.errors %}
+              <p class="section-footer__newsletter-block__message--error signup-form__response signup-form__response--error">
+                {{ field | capitalize }} - {{ form.errors.messages[field] }}
+              </p>
+            {% endfor %}
+          {% endif %}
+          <input type="hidden" name="contact[tags]" value="prospect,newsletter"/>
+            <input type="email"
+              placeholder="{{ 'layout.signup.placeholder' | t }}"
+              class="gdc-signup-form__email"
+              value=""
+              name="contact[email]"
+              aria-label="{{ 'layout.signup.input_label' | t | escape }}" />
+          <button class="button gdc-signup-form__button" type="submit">
+            {{- 'layout.signup.submit' | t | escape -}}
+          </button>
+        {% endif %}
+      {% endform %}
+    </div>
+  </div>

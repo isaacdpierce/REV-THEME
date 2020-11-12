@@ -1,0 +1,17 @@
+<div class="gdc-size-video">
+  {{ section.settings.video_html}}
+</div>
+
+{% schema %}
+{
+  "name": "Size Video",
+  "settings": [
+    {
+      "id": "video_html",
+      "type": "html",
+      "label": "Video Embed",
+      "info": "Get the embed code from the Youtube video ( Right-click on video and select 'Copy Embed Code'. )" 
+    }
+  ]
+}
+{% endschema %}
