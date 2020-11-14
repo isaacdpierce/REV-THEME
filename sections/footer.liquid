@@ -80,10 +80,35 @@
 
 
     <div class="section-footer__row section-footer__row-lower">
-          
-
-
+      {% for block in section.blocks %}
       <div class="section-footer__row__col">
+        {% if block.type == 'newsletter' %}
+          <div class="section-footer__row__col">
+            {% include 'gdc-signup-form'%}    
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+
+    <div class="section-footer__row__col">
+      {% if section.settings.show_locale_selector or section.settings.show_currency_selector %}
+        <div class="section-footer__localization">
+          {% render 'localization', input_prefix: 'footer' %}
+        </div>
+      {% endif %}
+
+      <div class="copyright">
+        <span class="copy">&copy; {{ "now" | date: "%Y" }} <a href="{{ routes.root_url }}">{{ shop.name }}</a>.</span>
+
+        {{ powered_by_link }}
+        <div>
+          <span>Website Built by <a href="https://gdcommerce.ca/" target="_blank">Good Commerce</a></span>
+        </div>
+      </div>
+    </div>
+
+
+      <div class="section-footer__row__col">     
         {% if section.settings.show_payment_icons %}
           <div class="section-footer__payment-icons">
             {% for type in shop.enabled_payment_types %}
@@ -92,6 +117,7 @@
           </div>
 
         {% endif %}
+
         {% if section.settings.lower_menu != blank %}
           <div class="section-footer__lower-menu gdc-section-footer__lower-menu">
             <ul class="section-footer__lower-menu__list" role="navigation" aria-label="{{ 'layout.footer.navigation_aria_label' | t | escape }}">
@@ -107,30 +133,11 @@
         {% endif %}
       </div>
 
-      {% for block in section.blocks %}
-      {% if block.type == 'newsletter' %}
-        <div class="section-footer__row__col">
-          {% include 'gdc-signup-form'%}    
-        </div>
-      {% endif %}
-    {% endfor %}
+ 
+
+
       
-      <div class="section-footer__row__col">
-        {% if section.settings.show_locale_selector or section.settings.show_currency_selector %}
-          <div class="section-footer__localization">
-            {% render 'localization', input_prefix: 'footer' %}
-          </div>
-        {% endif %}
 
-        <div class="copyright">
-          <span class="copy">&copy; {{ "now" | date: "%Y" }} <a href="{{ routes.root_url }}">{{ shop.name }}</a>.</span>
-
-          {{ powered_by_link }}
-          <div>
-            <span>Website Built by <a href="https://gdcommerce.ca/" target="_blank">Good Commerce</a></span>
-          </div>
-        </div>
-      </div>
 
 
 

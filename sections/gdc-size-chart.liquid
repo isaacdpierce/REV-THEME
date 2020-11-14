@@ -15,3 +15,14 @@
   ]
 }
 {% endschema %}
+
+{% javascript %}
+  const tableRows = document.querySelectorAll('.gdc-user-content__size-chart tr');
+  const tableData = document.querySelectorAll('.gdc-user-content__size-chart td');
+
+  [...tableData, ...tableRows].forEach(data => {
+    console.log(data)
+    data.removeAttribute("style");
+  })
+  
+{% endjavascript %}

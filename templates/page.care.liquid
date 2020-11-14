@@ -1,0 +1,13 @@
+<div class="article">
+  <div class="container cf">
+    <div class="page-header cf">
+      <h1 class="majortitle">{{ page.title }}</h1>
+    </div>
+    {% if page.content != blank %}
+      <div class="user-content">
+        {{ page.content }}
+      </div>
+    {% endif %}
+  </div>
+  {% section 'gdc-cards-care' %}             
+</div>

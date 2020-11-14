@@ -6,7 +6,7 @@
       {%- endif -%}
 
       {%- if section.settings.title != blank -%}
-        <h1 class="majortitle in-content">{{ section.settings.title | escape }}</h1>
+        <h2 class="majortitle in-content">{{ section.settings.title | escape }}</h2>
       {%- endif -%}
 
       <div class="user-content {% if section.settings.enlarge_text %}large-text{% endif %}">{{ section.settings.text }}</div>

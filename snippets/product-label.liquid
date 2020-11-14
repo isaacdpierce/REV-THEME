@@ -1,6 +1,6 @@
 {%- if product.available == false and settings.prod_sold_out_show -%}
   <!-- <span class="productlabel soldout"><span>{{ 'products.labels.sold_out' | t }}</span></span> -->
-  <h3 class="gdc-sold-out"style="transform: translateY(-50%);">SOLD OUT</h3>
+  <h5 class="gdc-sold-out">SOLD OUT</h5>
 {%- else -%}
   {%- if settings.prod_stock_warn_show and settings.prod_stock_warn_limit_int == 0 and product.variants.size == 1 and product.variants.first.inventory_management == 'shopify' and product.variants.first.inventory_quantity > 0 -%}
     <span class="productlabel general"><span>{{ 'products.labels.only_x_left' | t: quantity: product.variants.first.inventory_quantity }}</span></span>
@@ -10,3 +10,4 @@
     <span class="productlabel general"><span>{{ 'products.labels.only_x_left' | t: quantity: product.variants.first.inventory_quantity }}</span></span>
   {%- endif -%}
 {%- endif -%}
+        

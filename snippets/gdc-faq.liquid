@@ -1,0 +1,13 @@
+<section class="gdc-faq">
+  {% for block in section.blocks %}
+    {% if  block.settings.section_title %}
+      <h6 class="gdc-faq-title">{{ block.settings.section_title }}</h6>
+    {% endif %}
+    {% if  block.settings.question %}
+      <button class="gdc-accordion">{{ block.settings.question }}</button>
+      <div class="gdc-panel">
+        {{ block.settings.answer }}
+      </div>
+   {% endif %}
+  {% endfor %}
+</section>

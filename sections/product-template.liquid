@@ -125,7 +125,13 @@
           {% endfor %}
         </div>
       {% endif %}
+
+      {% if section.settings.show_sales  %}
+        {% include 'gdc-sale-block' %}
+      {% endif %}
+
     </div>
+
 
     <div class="detail product-column-right">
 
@@ -207,7 +213,7 @@
       </div>
 
       <div class="product-form section content-divider">
-
+      {% if product.available %}
         {% form 'product', product, class: 'form', data-ajax-add-to-cart: true, data-product-id: product.id, data-enable-history-state: 'true' %}
           <div class="input-row">
             {% if product.variants.size > 1 %}
@@ -248,21 +254,6 @@
                         {% if option.selected_value == value %}selected="selected"{% endif %}>{{ value }}</option>
                     {% endfor %}
                   </select>
-
-                  {% if settings.show_size_chart and option.name == settings.size_chart_variant %}
-                    <div class="size-chart-container">
-                      <a href="{{ pages[settings.size_chart_page].url }}" target="_blank" class="size-chart-link">
-                        {{ 'products.product.size_chart' | t }}
-                      </a>
-                      <div class="size-chart-content hidden">
-                        <div class="size-chart">
-                          <div class="size-chart__inner user-content">
-                            {{ pages[settings.size_chart_page].content }}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  {% endif %}
                 </div>
 
               {% endfor %}
@@ -311,65 +302,61 @@
 
             {% endif %}
           </div>
-
-          {% if product.available %}
-            {% if section.settings.show_inventory_notice %}
-              {%- capture inventory_notice -%}
-                {%- if current_variant.inventory_management == 'shopify' and current_variant.inventory_quantity > 0 -%}
-                  {%- if section.settings.inventory_notice_threshold == 0 or current_variant.inventory_quantity <= section.settings.inventory_notice_threshold -%}
-                    <div class="product-inventory-notice">
-                      {{- 'products.labels.only_x_left' | t: quantity: current_variant.inventory_quantity -}}
-                    </div>
-                  {%- else -%}
-                    <div class="product-inventory-notice product-inventory-notice--no-inventory"></div>
-                  {%- endif -%}
+          {% if section.settings.show_inventory_notice %}
+            {%- capture inventory_notice -%}
+              {%- if current_variant.inventory_management == 'shopify' and current_variant.inventory_quantity > 0 -%}
+                {%- if section.settings.inventory_notice_threshold == 0 or current_variant.inventory_quantity <= section.settings.inventory_notice_threshold -%}
+                  <div class="product-inventory-notice">
+                    {{- 'products.labels.only_x_left' | t: quantity: current_variant.inventory_quantity -}}
+                  </div>
                 {%- else -%}
                   <div class="product-inventory-notice product-inventory-notice--no-inventory"></div>
                 {%- endif -%}
-              {%- endcapture -%}
+              {%- else -%}
+                <div class="product-inventory-notice product-inventory-notice--no-inventory"></div>
+              {%- endif -%}
+            {%- endcapture -%}
+          {% endif %}
+          {% unless section.settings.show_quantity_selector %}{{ inventory_notice }}{% endunless %}
+          <div class="quantity-submit-row input-row {% if section.settings.enable_payment_button %}has-spb{% endif %}">
+            {% if section.settings.show_quantity_selector %}
+              <label for="quantity">
+                {{ 'products.product.quantity' | t }} {{ inventory_notice }}
+              </label>
+              <div class="quantity-wrapper">
+                <a href="#" data-quantity="down">{% render 'svg-minus' %}</a>
+                <input aria-label="{{ 'products.product.quantity' | t }}" id="quantity" name="quantity" value="1" />
+                <a href="#" data-quantity="up">{% render 'svg-plus' %}</a>
+              </div>
+            {% endif %}
+            <div class="quantity-submit-row__submit input-row">
+              <input class="button button--large" type="submit" value="{{ 'products.product.add_to_cart' | t }}" />
+            </div>
+            {% if section.settings.enable_payment_button %}
+              {{ form | payment_button }}
             {% endif %}
 
-            {% unless section.settings.show_quantity_selector %}{{ inventory_notice }}{% endunless %}
-
-            <div class="quantity-submit-row input-row {% if section.settings.enable_payment_button %}has-spb{% endif %}">
-              {% if section.settings.show_quantity_selector %}
-                <label for="quantity">
-                  {{ 'products.product.quantity' | t }} {{ inventory_notice }}
-                </label>
-                <div class="quantity-wrapper">
-                  <a href="#" data-quantity="down">{% render 'svg-minus' %}</a>
-                  <input aria-label="{{ 'products.product.quantity' | t }}" id="quantity" name="quantity" value="1" />
-                  <a href="#" data-quantity="up">{% render 'svg-plus' %}</a>
-                </div>
-              {% endif %}
-              <div class="quantity-submit-row__submit input-row">
-                <input class="button button--large" type="submit" value="{{ 'products.product.add_to_cart' | t }}" />
-              </div>
-              {% if section.settings.enable_payment_button %}
-                {{ form | payment_button }}
-              {% endif %}
-
-              {% if section.settings.show_backorder_text == true %}
-                {% render 'backorder', product: product, variant: current_variant %}
-              {% endif %}
-            </div>
-
-          {% else %}
-            <div class="product-unavailable">{{ 'products.product.product_unavailable' | t }}</div>
-            {% form 'contact'%}
-            <input type="hidden" name="contact[SoldOut]" value="Inform customer when in stock."/>
-            <label for="ContactFormSoldOut" style="display: inline-block; margin-bottom: 10px;">Do you want to receive an email when it's back in stock?</label>
-            <input
-              type="email"
-              id="ContactFormSoldOut"
-              name="contact[SoldOut]"
-              placeholder="Enter Email"
-              style="padding: 7px;"
-            />
-            <button type="submit" style="padding: 9px;">Send</button>
-            {% endform %}
-          {% endif %}
+            {% if section.settings.show_backorder_text == true %}
+              {% render 'backorder', product: product, variant: current_variant %}
+            {% endif %}
+          </div>
         {% endform %}
+      {% else %}
+        <div class="product-unavailable">{{ 'products.product.product_unavailable' | t }}</div>
+        {% form 'contact'%}
+        <input type="hidden" name="contact[SoldOut]" value="Inform customer when in stock."/>
+        <label for="ContactFormSoldOut" style="display: inline-block; margin-bottom: 10px;">Do you want to receive an email when it's back in stock?</label>
+        <input
+          type="email"
+          id="ContactFormSoldOut"
+          name="contact[SoldOut]"
+          placeholder="Enter Email"
+          style="padding: 7px;"
+        />
+        <button type="submit" style="padding: 9px;">Send</button> 
+        {% endform %}
+
+      {% endif %}
 
         {%- if template contains 'lightbox' -%}
         <script type="application/json" id="ProductJson-{{ product.id }}">
@@ -473,6 +460,12 @@
     "name": "Product pages",
     "class": "section-product-template",
     "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_sales",
+        "label": "Show Sale Section",
+        "default": true
+      },
       {
         "type": "checkbox",
         "id": "show_tax_and_shipping",
@@ -618,6 +611,179 @@
         "label": "Enable video looping",
         "default": false
       }
+    ],
+    "blocks": [
+      {
+        "type": "large_text", 
+        "name": "Large Text Entry",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Large Sale entry"
+          },
+          {
+            "id": "large_text",
+            "type": "text",
+            "label": "Large Sale Text",
+            "info": "Enter Large Text For Sale Section"
+          },
+          {
+            "id": "large_text_color",
+            "type": "color",
+            "label": "Large Text Font Color",
+            "default": "#fff"
+          },
+          {
+            "id": "large_text_bg_color",
+            "type": "color",
+            "label": "Large Text Background Color",
+            "default": "#000"
+          },
+          {
+            "type": "select",
+            "id": "text_align",
+            "options": [
+               { "value": "left", "label": "Left"},
+               { "value": "center", "label": "Center"},
+               { "value": "right", "label": "Right"}
+            ],
+            "default":   "center",
+            "label": "Text Align"
+         }
+        ]
+      },
+      {
+        "type": "medium_text", 
+        "name": "Medium Text Entry",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Medium Sale entry"
+          },
+          {
+            "id": "medium_text",
+            "type": "text",
+            "label": "Medium Sale Text",
+            "info": "Enter Medium Text For Sale Section"
+          },          {
+            "id": "medium_text_color",
+            "type": "color",
+            "label": "Medium Text Font Color",
+            "default": "#fff"
+          },
+          {
+            "id": "medium_text_bg_color",
+            "type": "color",
+            "label": "Medium Text Background Color",
+            "default": "#000"
+          },
+          {
+            "type": "select",
+            "id": "text_align",
+            "options": [
+               { "value": "left", "label": "Left"},
+               { "value": "center", "label": "Center"},
+               { "value": "right", "label": "Right"}
+            ],
+            "default":   "center",
+            "label": "Text Align"
+         }
+        ]
+      },
+      {
+        "type": "small_text", 
+        "name": "Small Text Entry",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Small Sale entry"
+          },
+          {
+            "id": "small_text",
+            "type": "richtext",
+            "label": "Small Sale Text",
+            "info": "Enter Small Text For Sale Section"
+          },
+          {
+            "id": "small_text_tag",
+            "type": "text",
+            "label": "Show text based on tag",
+            "info": "Enter a specific product tag you want this text to show for. **If left blank it will show on ALL product pages."
+          },
+          {
+            "id": "small_text_color",
+            "type": "color",
+            "label": "Small Text Font Color",
+            "default": "#637381"
+          },
+          {
+            "id": "small_text_bg_color",
+            "type": "color",
+            "label": "Small Text Background Color",
+            "default": "#000"
+          },
+          {
+            "type": "select",
+            "id": "text_align",
+            "options": [
+               { "value": "left", "label": "Left"},
+               { "value": "center", "label": "Center"}, 
+               { "value": "right", "label": "Right"}
+            ],
+            "default":   "center",
+            "label": "Text Align"
+         },
+         {
+          "type": "range",
+          "id": "font_size",
+          "min": 12,
+          "max": 36,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size",
+          "default": 20
+        },
+         {
+          "type": "range",
+          "id": "letter_spacing",
+          "min": 1,
+          "max": 6,
+          "step": 1,
+          "unit": "px",
+          "label": "Letter Spacing",
+          "default": 1
+        }
+        ]
+      },
+      {
+        "type": "spacer",     
+        "name": "Spacer",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Add blank Space"
+          },
+          {
+            "type": "range",
+            "id": "spacer_height",
+            "min": 5,
+            "max": 80,
+            "step": 5,
+            "unit": "px",
+            "label": "Blank Space",
+            "default": 20
+          },
+          {
+            "id": "spacer_color",
+            "type": "color",
+            "label": "Spacer Color",
+            "info": "The background color for your spacer.",
+            "default": "#000"
+          }
+        ]
+      }
     ]
+
   }
 {% endschema %}
+

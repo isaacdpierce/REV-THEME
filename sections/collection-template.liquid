@@ -15,7 +15,9 @@
 
     {% if section.settings.show_banner %}
       <div class="gdc-collection__banner" style="height: {{ section.settings.banner_height }}px;">
-        <img src="{{ section.settings.banner_image | img_url: "1200x" }}">
+        <picture>
+          <img src="{{ section.settings.banner_image | img_url: "1200x" }}">
+        </picture>
       </div>
     {% endif %}
 
@@ -305,7 +307,15 @@
         "max": 5,
         "step": 1,
         "default": 4
-      },
+      }
+    ]
+  }
+{% endschema %}
+
+
+{% comment %}
+Removed this section from settings because the list option effects css in undesirable way.
+
       {
         "type": "select",
         "id": "coll_gridstream_mode",
@@ -327,7 +337,5 @@
         "id": "coll_gridstream_toggle",
         "label": "Show toggle for grid and list views",
         "default": true
-      }
-    ]
-  }
-{% endschema %}
+      } 
+{% endcomment %}

@@ -1,0 +1,149 @@
+{% assign header_image = section.settings.header_image %}
+{% assign header_title = section.settings.header_title %}
+{% assign header_text = section.settings.header_text %}
+{% assign bottom_text = section.settings.bottom_text %}
+{% assign card_width = section.settings.card_width %}
+
+
+<div class="gdc-gift-card__section">
+  {% if header_image != blank %}
+    <header class="gdc-image-hero">
+      <img class="gdc-card__image" src="{{ header_image | img_url: '1200x' }}" /> 
+    </header>
+  {% endif %}
+
+  {% if header_title and header_text != blank %}
+    <div class="gdc-text-section">
+      <div class="gdc-card-section-text gdc-text--narrow">
+        <h2 class="gdc-text__title">{{ header_title }}</h2>        
+        {{ header_text }}
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="gdc-card-grid">
+    {% for block in section.blocks %}
+    {% assign card_image = block.settings.image %}
+    {% assign card_text = block.settings.text %}
+    {% assign button_url = block.settings.button_url %}
+    {% assign show_button = block.settings.show_button %}
+    {% assign button_text = block.settings.button_text %}
+
+    <div class="gdc-card gdc-card-care">
+      <div class="gdc-card__header">
+
+        <img class="gdc-card__image" src="{{ card_image | img_url: '300x' }}" /> 
+
+      </div>
+      <div class="gdc-card__text">
+        {{ card_text }}	
+      </div>
+      {% if show_button %}
+        <a href={{ button_url }} class="gdc-card__button" target="_blank"><span>{{ button_text }}</span></a>
+      {% endif %}
+    </div> 
+    {% endfor %}
+  </div>
+
+  <div class="gdc-text-section">
+    <div class="gdc-card-section-text gdc-text--wide">
+      {{ bottom_text }}
+    </div>
+  </div>
+</div>
+
+{% style %}
+
+.gdc-card-care {
+  width: calc( 100% / {{ card_width }} );   
+}
+
+{% endstyle %}
+
+{% schema %}
+  {
+    "name": "Care Cards",
+    "settings": [
+		    {
+          "id": "header_image",
+          "type": "image_picker",
+          "label": "Header Image"
+        },
+        {
+          "id": "header_title",
+          "type": "text",
+          "label": "Header Text"
+        },
+        {
+          "type":   "range",
+          "id":     "card_width",
+          "min":       3,
+          "max":       5,
+          "step":      1,
+          "unit":      "0%",
+          "label":     "Width of cards on desktop",      
+          "default":   4
+         },
+        {
+          "id": "header_text",
+          "type": "richtext",
+          "label": "Header Text"
+        },
+        {
+          "id": "bottom_text",
+          "type": "richtext",
+          "label": "Bottom Text"
+        }
+      ],
+      "blocks": [
+          {
+            "type": "Card", 
+            "name": "Card Entry",
+            "settings": [
+            {
+              "type": "header",
+              "content": "Card"
+            },
+            {
+              "type":   "range",
+              "id":     "card_width",
+              "min":       3,
+              "max":       5,
+              "step":      1,
+              "unit":      "0%",
+              "label":     "Width of cards on desktop",
+              "default":   4
+             },
+            {
+              "id": "image",
+              "type": "image_picker",
+              "label": "Card Image"
+            },
+            {
+              "id": "text",
+              "type": "richtext",
+              "label": "Card Text"
+            },
+            {
+              "id": "show_button",
+              "type": "checkbox",
+              "label": "Show Button",
+              "default": true
+            },
+            {
+              "id": "button_text",
+              "type": "text",
+              "label": "Button Text"
+            },
+            {
+              "id": "button_url",
+              "type": "text",
+              "label": "Button URL"
+            }
+        ]
+    }
+  ]
+  }
+{% endschema %}
+
+

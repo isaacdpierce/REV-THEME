@@ -3376,6 +3376,19 @@ h1, .h1-style, h2, .h2-style, h3, .h3-style, h4, .h4-style, h5, .h5-style, h6, .
   margin: 0 0 10px;
 }
 
+
+@media (max-width: 600px) {
+  .majortitle{
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 400px) {
+  .majortitle{
+    font-size: 16px;
+  }
+}
+
 .hometitle {
   line-height: 1em;
   margin: 0 0 30px;
@@ -10717,10 +10730,13 @@ html.template-password .password-login__button {
 
 .gdc-signup-form__button {
   padding: 9px !important;
+  font-size: .9em;
+  font-weight: bolder;
 }
 
 .gdc-signup-form__email {
   padding: 5px !important;
+  font-size: .9em;
 }
 
 .gdc-section-footer__text {
@@ -10745,8 +10761,15 @@ html.template-password .password-login__button {
 }
 
 .gdc-sold-out {
-  transform: translateY(-45%);
-  text-shadow: 0px -1px 1px white;
+  position: relative;
+  top: 7%;
+}
+
+@media (max-width: 390px) {   
+  .gdc-signup-form__email {
+    margin-bottom: 10px;
+  }
+
 }
 
 
@@ -10806,7 +10829,7 @@ html.template-password .password-login__button {
     margin: 0;
   }
   
-  .active, .gdc-accordion:hover {
+  .gdc-accordion.active, .gdc-accordion:hover {
     filter: brightness(1.1);
   }
   
@@ -10818,7 +10841,7 @@ html.template-password .password-login__button {
     transition: max-height 0.2s ease-out;
   }
   
-  .active .gdc-panel {
+  .gdc-accordion.active .gdc-panel {
     max-height: 400px;
   }
   
@@ -10830,7 +10853,7 @@ html.template-password .password-login__button {
     font-size: 38px;
   }
   
-  .active:after {
+  .gdc-accordion.active:after {
     content: "-";
     font-size: 40px;
     top: 35%;
@@ -10842,6 +10865,37 @@ html.template-password .password-login__button {
 
    /* ---------------- [GDC] Size Chart Section -------------------- */
 
+   .gdc-article {
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+   }
+
+   .gdc-user-content__size-chart table {
+    width: 50vw !important;
+    min-width: 320px;
+  }
+
+  .gdc-user-content__size-chart td {
+    width: 30px !important;
+    max-width: 30px !important;
+    min-width: 30px;
+    padding: 20px 0px;
+    border-right: 1px solid  rgb(231, 231, 231);
+    text-align: center;
+    font-size: 18px;
+    vertical-align: middle;
+  }
+
+  .gdc-user-content__size-chart td:first-of-type {
+    border-left: 1px solid rgb(231, 231, 231);
+  }
+
+  .gdc-user-content__size-chart tr:nth-of-type(even) {
+    background:#f1f1f1;
+  }
+
   .gdc-size-video {
     display: flex;
     justify-content: center;
@@ -10852,3 +10906,138 @@ html.template-password .password-login__button {
   .gdc-size-video iframe {  
     margin: 0 auto;
   }
+
+
+/* ---------------- [GDC] Size Cards Section -------------------- */
+
+  .gdc-gift-card__section {
+    min-height: 100vh;
+    padding-top: 40px;
+  }
+
+  .gdc-card-grid,
+  .gdc-text-section,
+  .gdc-card,
+  .gdc-card__header,
+  .gdc-card__button {
+	display: flex;  
+  }
+
+  .gdc-image-hero {
+	width: 100%;
+	height: 400px;
+	overflow: hidden;
+  margin-bottom: 40px;      
+  }
+
+  .gdc-image-hero img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: top;    
+  }
+
+  .gdc-text-section {
+	width: 100%;
+	justify-content: center;         
+	align-items: center; 
+  }
+
+  .gdc-text--narrow {
+  max-width: 500px; 
+  margin-bottom: 40px;
+  }
+
+  .gdc-text--wide {
+	width: 80%; 
+  }
+
+  .gdc-text__title {
+	font-size: 24px;
+  }
+
+  .gdc-card-section-text {
+	text-align: center;
+	font-size: 18px;
+  }
+
+  .gdc-card-grid {
+  width: 100%;
+	justify-content: center;
+  flex-wrap: nowrap;
+  }
+
+  .gdc-card {
+    position: relative;
+    flex-direction: column;
+    justify-content: space-between;               
+    align-items: center;      
+    min-width: 200px;
+    height: auto;
+    margin-right: 10px;
+    margin-bottom: 40px;
+  }
+   
+  .gdc-card__header,
+  .gdc-card__text	{
+	width: 100%; 
+	text-align: center;
+  }
+  
+  .gdc-card__header{
+	justify-content: center;
+	align-items: center;
+	height: auto;    
+  }
+
+  .gdc-card__image {
+	height: 100%;
+	width: 100%;
+	object-fit: cover;  
+  }
+
+  .gdc-card__text {
+	padding: 20px;
+	font-size: 21px;
+	height: 45%;
+  }
+
+  .gdc-card__button {
+	border: 1px solid #333;  
+	padding: 10px 0;
+	margin-bottom: 20px; 
+	width: 100%;
+	justify-content: center;            
+  align-items: center;
+  text-align: center;
+  }
+
+  @media (max-width: 1050px) {   
+    .gdc-card-grid {
+      flex-direction: column;
+      align-items: center;
+    }
+    .gdc-card {
+      min-width: 80%;    
+    }
+  }
+
+     /* ---------------- [GDC] Sale Block Section -------------------- */
+
+     .gdc-sale-block {
+       min-width: 320px;    
+       margin: 20px auto;
+     }
+
+     .gdc-sale-block h2, h6, p {
+      padding: 3px 20px;  
+      margin: 0;
+    }
+
+    .gdc-sale-block h2, h6 {
+      letter-spacing: 4px;
+    }
+
+    .gdc-sale-block__small-text {
+      
+    }

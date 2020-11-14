@@ -1,0 +1,83 @@
+
+<div class="gdc-sale-block">
+  {% for block in section.blocks %}
+
+
+  {% for tag in product.tags %}
+    {% if tag contains block.settings.small_text_tag %}
+      {%- assign block_tag = block.settings.small_text_tag -%}
+    {% endif %}
+  {% endfor %}
+
+  {% case block.type %}
+
+    {% when 'large_text' %}
+
+      <h2 class="gdc-sale-block__large-text"
+          style="
+              background-color: {{ block.settings.large_text_bg_color }};
+              color: {{ block.settings.large_text_color }};
+              text-align: {{ block.settings.text_align }};
+          ">
+        {{ block.settings.large_text }}
+
+      </h2>
+
+    {% when 'medium_text' %}
+      <h6 class="gdc-sale-block__medium-text"
+          style="
+          background-color: {{ block.settings.medium_text_bg_color }};
+          color: {{ block.settings.medium_text_color }};
+          text-align: {{ block.settings.text_align }};
+      ">
+        {{ block.settings.medium_text }}
+      </h6>
+
+    {% when 'small_text' %}
+
+      {% if block.settings.small_text_tag == "" %}
+      <div class="gdc-sale-block__small-text"
+            style="
+            background-color: {{ block.settings.small_text_bg_color }};
+            color: {{ block.settings.small_text_color }};
+            text-align: {{ block.settings.text_align }};
+            letter-spacing: {{ block.settings.letter_spacing }}px;
+            font-size: {{ block.settings.font_size }}px;">   
+        {{ block.settings.small_text }}
+      </div>
+      {% elsif block_tag != "" %}
+        <div class="gdc-sale-block__small-text"
+            style="
+            background-color: {{ block.settings.small_text_bg_color }};
+            color: {{ block.settings.small_text_color }};
+            text-align: {{ block.settings.text_align }};
+            letter-spacing: {{ block.settings.letter_spacing }}px;
+            font-size: {{ block.settings.font_size }}px;">   
+          {{ block.settings.small_text }}
+        </div>
+      {% endif %}
+
+    {% when 'spacer' %}
+      <div class="gdc-sale-block__spacer" style="height: {{ block.settings.spacer_height }}px; background: {{ block.settings.spacer_color }};"></div>
+
+  {% endcase %}  
+  {% endfor %}  
+</div>
+
+{% style %}
+ 
+.gdc-sale-block__large-text {
+  background-color: {{ block.settings.large_text_bg_color }};   
+  color: {{ block.settings.large_text_color }};
+}
+
+.gdc-sale-block__medium-text {
+  background-color: {{ block.settings.medium_text_bg_color }};
+  color: {{ block.settings.medium_text_color }};
+}
+
+.gdc-sale-block__small-text {
+  background-color: {{ block.settings.small_text_bg_color }};
+  color: {{ block.settings.small_text_color }};
+}
+{% endstyle %}
